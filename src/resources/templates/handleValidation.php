@@ -3,7 +3,7 @@
 require_once(__DIR__ . '/parts/productClassInit.php');
 
 $sku = $name = $price = '';
-$skuErr = $nameErr = $priceErr = '';
+$skuErr = $nameErr = $priceErr = $typeSwitcherErr = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['sku'])) {
@@ -25,8 +25,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         }
 
-        $typeId = $_POST['typeSwitcher'];
-        $productTypeId = intval($typeId);
+        $productTypeId = $_POST['typeSwitcher'];
+        if (!is_numeric($productTypeId)) {
+            $typeSwitcherErr = 'Please, select product type';
+            $response = array(
+                'success' => false,
+                'errors' =>
+                    [
+                        'sku_error' => $skuErr,
+                        'name_error' => $nameErr,
+                        'price_error' => $priceErr,
+                        'productTypeError' => $typeSwitcherErr
+                    ]
+            );
+            echo json_encode($response);
+            exit;
+        } else {
+            $productTypeId = intval($productTypeId);
+        }
 
         $products[$productTypeId]->validateProductAttributes();
 
@@ -57,8 +73,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'sku_error' => $skuErr,
                     'name_error' => $nameErr,
                     'price_error' => $priceErr
-                ]
+                ],
+            'errorAttrs' => []
         );
+
+        foreach ($products[$productTypeId]->getProductAttributeFieldsErrorArray() as $attrFieldError) {
+            $clazz = null;
+
+            try {
+                $clazz = new ReflectionClass($products[$productTypeId]);
+            } catch (ReflectionException $e) {
+                echo 'Reflection error: ' . $e->getMessage();
+            }
+
+            foreach ($clazz->getProperties(ReflectionProperty::IS_PRIVATE) as $property) {
+                if ($property->getValue($products[$productTypeId]) === $attrFieldError) {
+                    $propertyName = $property->getName();
+                    $response['errorAttrs'][$propertyName] = $attrFieldError;
+                }
+            }
+        }
+
         echo json_encode($response);
     }
 }

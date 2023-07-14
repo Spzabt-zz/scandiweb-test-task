@@ -31,6 +31,10 @@ abstract class Product
 
     abstract public function validateProductAttributes();
 
+    abstract public function getProductAttributeFieldsErrors(): string;
+
+    abstract public function getProductAttributeFieldsErrorArray(): array;
+
     public function saveProduct($productTypeId): bool
     {
         $productFromDb = $this->conn->prepare("SELECT Sku FROM product WHERE Sku = ?");

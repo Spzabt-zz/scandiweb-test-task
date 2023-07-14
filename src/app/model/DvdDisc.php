@@ -2,7 +2,8 @@
 
 class DvdDisc extends Product
 {
-    private float $size;
+    private ?float $size;
+    private string $sizeErr = '';
 
     public function __construct(
         int $id = 0,
@@ -10,7 +11,7 @@ class DvdDisc extends Product
         string $name = '',
         float $price = 0.0,
         int $typeId = 0,
-        float $size = 0.0
+        float $size = null
     ) {
         parent::__construct($id, $name, $price, $sku, $typeId);
         $this->size = $size;
@@ -18,40 +19,38 @@ class DvdDisc extends Product
 
     protected function insertSubProduct($productId)
     {
-//        if (empty($_POST['name'])) {
-//            $sizeErr = 'Please, submit required data';
-//        } else {
-//            $this->size = filter_input(INPUT_POST, 'size', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-//        }
-
         $stmt = $this->conn->prepare("INSERT INTO dvd_disc (product_id, size) VALUES (?, ?)");
         $stmt->execute([$productId, $this->size]);
     }
 
     public function displayProductAttributeInputFields()
     {
-        //$this->size = filter_input(INPUT_POST, 'size', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-        /*echo '<label class="form-check-label" for="productPrice">price</label>
-            <input type="number" step="any" class="form-label <?php echo $priceErr ? 'is-invalid' : ''; ?>"
-                   id="productPrice" name="price" value="<?php echo $price; ?>" placeholder="Enter product price">
-            <div class="invalid-feedback">
-                <?php echo $priceErr ?>
-            </div>';*/
-
         echo '<div class="mb-3 form-check">
                 <label class="form-check-label" for="size">size</label>
-                <input type="number" class="form-label" id="size" name="size">
+                <input type="number" step="any" class="form-label"
+                    id="size" name="size" placeholder="Enter DVD size">
+                <div class="invalid-feedback" id="sizeErr"></div>
               </div>';
-//        echo "<div class='invalid-feedback'>
-//                $this->size
-//              </div>";
         echo '<div>Please, provide size</div>';
     }
 
     public function validateProductAttributes()
     {
+        if (empty($_POST['size'])) {
+            $this->sizeErr = 'Please, provide size data';
+        } else {
+            $this->size = filter_input(INPUT_POST, 'size', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        }
+    }
 
+    public function getProductAttributeFieldsErrors(): string
+    {
+        return $this->getSizeErr();
+    }
+
+    public function getProductAttributeFieldsErrorArray(): array
+    {
+        return array($this->sizeErr);
     }
 
     public function getProductList()
@@ -72,11 +71,13 @@ class DvdDisc extends Product
 
     public function deleteProduct($productId)
     {
-        $stmt = $this->conn->prepare("
+        $stmt = $this->conn->prepare(
+            "
         DELETE product, dd FROM product 
         INNER JOIN dvd_disc dd on product.product_id = dd.product_id
         WHERE dd.product_id = ?;
-        ");
+        "
+        );
         $stmt->execute([$productId]);
     }
 
@@ -88,5 +89,10 @@ class DvdDisc extends Product
     public function setSize(float $size): void
     {
         $this->size = $size;
+    }
+
+    public function getSizeErr(): string
+    {
+        return $this->sizeErr;
     }
 }

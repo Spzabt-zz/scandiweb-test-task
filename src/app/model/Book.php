@@ -2,28 +2,54 @@
 
 class Book extends Product
 {
-    private float $weight;
+    private ?float $weight;
+    private string $weightErr = '';
 
-    public function __construct(int $id = 0, string $sku = '', string $name = '', float $price = 0.0, int $typeId = 0, float $weight = 0.0)
-    {
+    public function __construct(
+        int $id = 0,
+        string $sku = '',
+        string $name = '',
+        float $price = 0.0,
+        int $typeId = 0,
+        float $weight = null
+    ) {
         parent::__construct($id, $name, $price, $sku, $typeId);
         $this->weight = $weight;
     }
 
     protected function insertSubProduct($productId)
     {
-        $this->weight = filter_input(INPUT_POST, 'weight', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $stmt = $this->conn->prepare("INSERT INTO book (product_id, weight) VALUES (?, ?)");
         $stmt->execute([$productId, $this->weight]);
     }
-
     public function displayProductAttributeInputFields()
     {
-        echo '<div class="mb-3 form-check">
-                <label class="form-check-label" for="weight">weight</label>
-                <input type="number" class="form-label" id="weight" name="weight">
-              </div>';
+        echo "<div class='mb-3 form-check'>
+                <label class='form-check-label' for='weight'>weight</label>
+                <input type='number' class='form-label'
+                 id='weight' name='weight' placeholder='Enter book weight'>
+                <div class='invalid-feedback' id='weightErr'></div>
+              </div>";
         echo '<div>Please, provide weight</div>';
+    }
+
+    public function validateProductAttributes()
+    {
+        if (empty($_POST['weight'])) {
+            $this->weightErr = 'Please, provide weight data';
+        } else {
+            $this->weight = filter_input(INPUT_POST, 'weight', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        }
+    }
+
+    public function getProductAttributeFieldsErrors(): string
+    {
+        return $this->getWeightErr();
+    }
+
+    public function getProductAttributeFieldsErrorArray(): array
+    {
+        return array($this->weightErr);
     }
 
     public function getProductList()
@@ -44,11 +70,13 @@ class Book extends Product
 
     public function deleteProduct($productId)
     {
-        $stmt = $this->conn->prepare("
+        $stmt = $this->conn->prepare(
+            "
         DELETE product, b FROM product 
         INNER JOIN book b on product.product_id = b.product_id
         WHERE b.product_id = ?;
-        ");
+        "
+        );
         $stmt->execute([$productId]);
     }
 
@@ -60,5 +88,10 @@ class Book extends Product
     public function setWeight(float $weight): void
     {
         $this->weight = $weight;
+    }
+
+    public function getWeightErr(): string
+    {
+        return $this->weightErr;
     }
 }
