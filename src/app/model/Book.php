@@ -1,7 +1,13 @@
 <?php
 
+namespace App\Model;
+
+use App\Util\ProductUtil;
+use PDO;
+
 class Book extends Product
 {
+    private const MAX_WEIGHT_LENGTH = 10;
     private ?float $weight;
     private string $weightErr = '';
 
@@ -37,6 +43,8 @@ class Book extends Product
     {
         if (empty($_POST['weight'])) {
             $this->weightErr = 'Please, provide weight data';
+        } else if (ProductUtil::countOfDigits($_POST['weight']) > self::MAX_WEIGHT_LENGTH) {
+            $this->weightErr = 'Book weight must be up to ' . self::MAX_WEIGHT_LENGTH . ' digits!';
         } else {
             $this->weight = filter_input(INPUT_POST, 'weight', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         }

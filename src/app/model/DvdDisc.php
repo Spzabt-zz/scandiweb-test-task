@@ -1,7 +1,13 @@
 <?php
 
+namespace App\Model;
+
+use App\Util\ProductUtil;
+use PDO;
+
 class DvdDisc extends Product
 {
+    private const MAX_SIZE_LENGTH = 10;
     private ?float $size;
     private string $sizeErr = '';
 
@@ -38,6 +44,8 @@ class DvdDisc extends Product
     {
         if (empty($_POST['size'])) {
             $this->sizeErr = 'Please, provide size data';
+        } else if (ProductUtil::countOfDigits($_POST['size']) > self::MAX_SIZE_LENGTH) {
+            $this->sizeErr = 'DVD size must be up to ' . self::MAX_SIZE_LENGTH . ' digits!';
         } else {
             $this->size = filter_input(INPUT_POST, 'size', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         }

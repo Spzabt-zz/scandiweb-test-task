@@ -1,8 +1,10 @@
 <?php
 
+namespace App\Util;
+
 class ProductUtil
 {
-    static function compareProducts($product1, $product2): int
+    public static function compareProducts($product1, $product2): int
     {
         if ($product1->product_id < $product2->product_id) {
             return -1;
@@ -11,5 +13,11 @@ class ProductUtil
         } else {
             return 0;
         }
+    }
+
+    public static function countOfDigits($number): string {
+        $number = str_replace(['.', ','], '', $number);
+
+        return strlen($number);
     }
 }

@@ -1,7 +1,15 @@
 <?php
 
+namespace App\Model;
+
+use App\Util\ProductUtil;
+use PDO;
+
 class Furniture extends Product
 {
+    private const MAX_HEIGHT_SIZE = 10;
+    private const MAX_WIDTH_SIZE = 10;
+    private const MAX_LENGTH_SIZE = 10;
     private ?float $height;
     private ?float $width;
     private ?float $length;
@@ -58,12 +66,18 @@ class Furniture extends Product
     {
         if (empty($_POST['height'])) {
             $this->heightErr = 'Please, provide height data';
+        } else if (ProductUtil::countOfDigits($_POST['height']) > self::MAX_HEIGHT_SIZE) {
+            $this->heightErr = 'Furniture height must be up to ' . self::MAX_HEIGHT_SIZE . ' digits!';
         }
         if (empty($_POST['width'])) {
             $this->widthErr = 'Please, provide width data';
+        } else if (ProductUtil::countOfDigits($_POST['width']) > self::MAX_WIDTH_SIZE) {
+            $this->widthErr = 'Furniture width must be up to ' . self::MAX_WIDTH_SIZE . ' digits!';
         }
         if (empty($_POST['length'])) {
             $this->lengthErr = 'Please, provide length data';
+        } else if (ProductUtil::countOfDigits($_POST['length']) > self::MAX_LENGTH_SIZE) {
+            $this->lengthErr = 'Furniture length must be up to ' . self::MAX_LENGTH_SIZE . ' digits!';
         }
         if (empty($this->heightErr) && empty($this->widthErr) && empty($this->lengthErr)) {
             $this->height = filter_input(INPUT_POST, 'height', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

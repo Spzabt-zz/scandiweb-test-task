@@ -1,11 +1,13 @@
 <?php
 
+use App\Model\ProductType;
+
 require_once(__DIR__ . '/parts/header.php');
-require_once(__DIR__ . '/parts/productClassInit.php');
 
 ?>
 
-<script src="../static/js/typeSwitcher.js"></script>
+<script src="/product-web-app/src/resources/static/js/fieldValidator.js"></script>
+<script src="/product-web-app/src/resources/static/js/typeSwitcher.js"></script>
 
 <body>
 <div class="container">
@@ -20,7 +22,7 @@ require_once(__DIR__ . '/parts/productClassInit.php');
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <input class="btn btn-primary" type="button" onclick="location.href='productList.php';" value="Cancel" />
+                    <input class="btn btn-primary" type="button" onclick="location.href='/product-web-app/';" value="Cancel" />
                 </div>
             </div>
         </nav>
@@ -66,79 +68,6 @@ require_once(__DIR__ . '/parts/productClassInit.php');
     </form>
 </div>
 
-<script>
-    function validateProductFormInputFields(event) {
-        event.preventDefault();
-
-        let productForm = document.getElementById("product_form");
-        let productFormData = new FormData(productForm);
-
-        let xmlHttp = new XMLHttpRequest();
-        xmlHttp.open('POST', 'handleValidation.php', true);
-        xmlHttp.send(productFormData);
-        xmlHttp.onreadystatechange = function () {
-            if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-                console.log(xmlHttp.responseText);
-                try {
-                    let response = JSON.parse(xmlHttp.responseText);
-
-                    if (response.success) {
-                        console.log('success');
-                        window.location.href = "productList.php";
-                    } else {
-                        console.log('not success');
-
-                        if (response.errors.sku_error !== '') {
-                            document.getElementById('sku').classList.add("is-invalid");
-                            document.getElementById('sku_error').innerHTML = response.errors.sku_error;
-                        } else {
-                            document.getElementById('sku').classList.remove("is-invalid");
-                            document.getElementById('sku_error').innerHTML = response.errors.sku_error;
-                        }
-
-                        if (response.errors.name_error !== '') {
-                            document.getElementById('name').classList.add("is-invalid");
-                            document.getElementById('name_error').innerHTML = response.errors.name_error;
-                        } else {
-                            document.getElementById('name').classList.remove("is-invalid");
-                            document.getElementById('name_error').innerHTML = response.errors.name_error;
-                        }
-
-                        if (response.errors.price_error !== '') {
-                            document.getElementById('price').classList.add("is-invalid");
-                            document.getElementById('price_error').innerHTML = response.errors.price_error;
-                        } else {
-                            document.getElementById('price').classList.remove("is-invalid");
-                            document.getElementById('price_error').innerHTML = response.errors.price_error;
-                        }
-
-                        if (response.errors.productTypeError !== undefined && response.errors.productTypeError !== '') {
-                            document.getElementById('productTypeError').innerHTML = response.errors.productTypeError;
-                        } else {
-                            document.getElementById('productTypeError').innerHTML = '';
-                        }
-
-                        if (response.errorAttrs && Object.keys(response.errorAttrs).length > 0)
-                            for (let error in response.errorAttrs) {
-                                let inputId = error.replace("Err", "");
-                                console.log(inputId);
-
-                                if (response.errorAttrs[error] !== '') {
-                                    document.getElementById(inputId).classList.add("is-invalid");
-                                    document.getElementById(error).innerHTML = response.errorAttrs[error];
-                                } else {
-                                    document.getElementById(inputId).classList.remove("is-invalid");
-                                    document.getElementById(error).innerHTML = response.errorAttrs[error];
-                                }
-                            }
-                    }
-                } catch (error) {
-                    console.log('Error parsing JSON response:', error);
-                }
-            }
-        };
-    }
-</script>
-<script src="../static/js/bootstrap.min.js"></script>
+<script src="/product-web-app/src/resources/static/js/bootstrap.min.js"></script>
 </body>
 </html>

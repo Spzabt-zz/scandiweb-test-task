@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /product-web-app/
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /product-web-app/index.php [L]

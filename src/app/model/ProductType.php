@@ -1,5 +1,11 @@
 <?php
 
+namespace App\Model;
+
+use PDO;
+use PDOException;
+use App\Config\DbConnection as DataBaseConnection;
+
 class ProductType
 {
     private int $id;
@@ -8,7 +14,7 @@ class ProductType
 
     public function __construct()
     {
-        $this->conn = DbConnection::getInstance()->getConnection();
+        $this->conn = DataBaseConnection::getInstance()->getConnection();
     }
 
     public function getProductTypes(): array

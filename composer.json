@@ -1,17 +1,17 @@
 {
-    "name": "bohdan/product-web-app",
-    "autoload": {
-        "psr-4": {
-            "Bohdan\\ProductWebApp\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Bohdan",
-            "email": "stoida146@gmail.com"
-        }
-    ],
-    "require": {
-      "ext-pdo": "*"
+  "name": "bohdan/product-web-app",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/app"
     }
+  },
+  "authors": [
+    {
+      "name": "Bohdan",
+      "email": "stoida146@gmail.com"
+    }
+  ],
+  "require": {
+    "ext-pdo": "*"
+  }
 }

@@ -1,5 +1,10 @@
 <?php
 
+namespace App\Model;
+
+use PDO;
+use App\Config\DbConnection as DataBaseConnection;
+
 abstract class Product
 {
     protected PDO $conn;
@@ -11,7 +16,7 @@ abstract class Product
 
     public function __construct(int $id = 0, string $name = '', float $price = 0.0, string $sku = '', int $typeId = 0)
     {
-        $this->conn = DbConnection::getInstance()->getConnection();
+        $this->conn = DataBaseConnection::getInstance()->getConnection();
         $this->id = $id;
         $this->sku = $sku;
         $this->name = $name;

@@ -1,24 +1,11 @@
-<?php
-
-require_once(__DIR__ . '/parts/header.php');
-require_once(__DIR__ . '/parts/productClassInit.php');
-require(__DIR__ . '/../../app/util/ProductUtil.php');
-
-if (isset($_POST['massDeleteSubmit']) && isset($_POST['productIds'])) {
-    $productIds = $_POST['productIds'];
-
-    foreach ($productIds as $productId) {
-        foreach ($products as $product => $productValue) {
-            $productValue->deleteProduct($productId);
-        }
-    }
-}
-?>
-
+<?php require_once(__DIR__ . '/parts/header.php'); ?>
 
 <body>
-<form id="massDeleteForm" method="POST" action="<?php
-echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+<form id="massDeleteForm" method="POST" action="/product-web-app/remove-product">
+
+    <button class="btn btn-primary" type="button" onclick="location.href='/product-web-app/add-product';">ADD</button>
+
+    <button class="btn btn-outline-success" id="delete-product-btn" type="submit" name="massDeleteSubmit">MASS DELETE</button>
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
@@ -29,20 +16,14 @@ echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <input class="btn btn-primary" type="button" onclick="location.href='productAdd.php';" value="ADD" />
 
-            <button class="btn btn-outline-success" id="delete-product-btn" type="submit" name="massDeleteSubmit">MASS DELETE</button>
         </div>
     </nav>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
         <?php
+        $products = $productController->getProducts();
 
-        $productsFromDb = [];
-        foreach ($products as $product => $productValue) {
-            $productsFromDb = array_merge($productsFromDb, $productValue->getProductList());
-        }
-        usort($productsFromDb, "ProductUtil::compareProducts");
         if (count($productsFromDb) !== 0) {
             foreach ($productsFromDb as $p) {
                 echo '<div class="col">';
@@ -62,6 +43,6 @@ echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
     </div>
 </form>
 
-<script src="../static/js/bootstrap.min.js"></script>
+<script src="/product-web-app/src/resources/static/js/bootstrap.min.js"></script>
 </body>
 </html>
