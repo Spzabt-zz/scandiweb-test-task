@@ -49,6 +49,8 @@ class DvdDisc extends Product
     {
         if (empty($_POST['size'])) {
             $this->sizeErr = 'Please, provide size data';
+        } elseif (ProductUtil::isInvalidInput($_POST['size'])) {
+            $this->sizeErr = 'Please, provide the data of indicated type';
         } elseif (ProductUtil::countOfDigits($_POST['size']) > self::MAX_SIZE_LENGTH) {
             $this->sizeErr = 'DVD size must be up to ' . self::MAX_SIZE_LENGTH . ' digits!';
         } else {

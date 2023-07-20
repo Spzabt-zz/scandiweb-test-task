@@ -20,4 +20,8 @@ class ProductUtil
 
         return strlen($number);
     }
+
+    public static function isInvalidInput($input): bool {
+        return (strpos(strtolower($input), "e"));
+    }
 }

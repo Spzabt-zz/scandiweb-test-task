@@ -51,6 +51,8 @@ class ProductController
 
                 if (empty($_POST['price'])) {
                     $priceErr = 'Please, provide product price';
+                } elseif (ProductUtil::isInvalidInput($_POST['price'])) {
+                    $priceErr = 'Please, provide the data of indicated type';
                 } elseif (ProductUtil::countOfDigits($_POST['price']) > self::MAX_PRICE_LENGTH) {
                     $priceErr = 'Product price must be up to ' . self::MAX_PRICE_LENGTH . ' digits!';
                 } else {

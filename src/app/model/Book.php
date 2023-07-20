@@ -49,6 +49,8 @@ class Book extends Product
     {
         if (empty($_POST['weight'])) {
             $this->weightErr = 'Please, provide weight data';
+        } elseif (ProductUtil::isInvalidInput($_POST['weight'])) {
+            $this->weightErr = 'Please, provide the data of indicated type';
         } elseif (ProductUtil::countOfDigits($_POST['weight']) > self::MAX_WEIGHT_LENGTH) {
             $this->weightErr = 'Book weight must be up to ' . self::MAX_WEIGHT_LENGTH . ' digits!';
         } else {

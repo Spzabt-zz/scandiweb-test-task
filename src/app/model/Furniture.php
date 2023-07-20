@@ -79,19 +79,28 @@ class Furniture extends Product
     {
         if (empty($_POST['height'])) {
             $this->heightErr = 'Please, provide height data';
+        } elseif (ProductUtil::isInvalidInput($_POST['height'])) {
+            $this->heightErr = 'Please, provide the data of indicated type';
         } elseif (ProductUtil::countOfDigits($_POST['height']) > self::MAX_HEIGHT_SIZE) {
             $this->heightErr = 'Furniture height must be up to ' . self::MAX_HEIGHT_SIZE . ' digits!';
         }
+
         if (empty($_POST['width'])) {
             $this->widthErr = 'Please, provide width data';
+        } elseif (ProductUtil::isInvalidInput($_POST['width'])) {
+            $this->widthErr = 'Please, provide the data of indicated type';
         } elseif (ProductUtil::countOfDigits($_POST['width']) > self::MAX_WIDTH_SIZE) {
             $this->widthErr = 'Furniture width must be up to ' . self::MAX_WIDTH_SIZE . ' digits!';
         }
+
         if (empty($_POST['length'])) {
             $this->lengthErr = 'Please, provide length data';
+        } elseif (ProductUtil::isInvalidInput($_POST['length'])) {
+            $this->lengthErr = 'Please, provide the data of indicated type';
         } elseif (ProductUtil::countOfDigits($_POST['length']) > self::MAX_LENGTH_SIZE) {
             $this->lengthErr = 'Furniture length must be up to ' . self::MAX_LENGTH_SIZE . ' digits!';
         }
+
         if (empty($this->heightErr) && empty($this->widthErr) && empty($this->lengthErr)) {
             $this->height = filter_input(INPUT_POST, 'height', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $this->width = filter_input(INPUT_POST, 'width', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
