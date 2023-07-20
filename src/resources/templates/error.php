@@ -1,3 +1,7 @@
-<?php
+<?php require_once(__DIR__ . '/parts/header.php'); ?>
 
-echo '<h1>404 Page Not Found!</h1>';
+<body>
+    <h1 class="error-page">404 Page Not Found!</h1>
+</body>
+
+</html>

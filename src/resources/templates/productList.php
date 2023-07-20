@@ -1,48 +1,41 @@
-<?php require_once(__DIR__ . '/parts/header.php'); ?>
+<?php
+require_once(__DIR__ . '/parts/header.php'); ?>
 
 <body>
 <form id="massDeleteForm" method="POST" action="/product-web-app/remove-product">
 
-    <button class="btn btn-primary" type="button" onclick="location.href='/product-web-app/add-product';">ADD</button>
-
-    <button class="btn btn-outline-success" id="delete-product-btn" type="submit" name="massDeleteSubmit">MASS DELETE</button>
-
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Product List</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+    <div class="test-task-header">
+        <h1 class="page-logo">Product List</h1>
+        <div class="header-controls">
+            <button class="add-product-btn" type="button" onclick="location.href='/product-web-app/add-product';">
+                ADD
             </button>
-
-
+            <button class="mass-delete-product-btn" id="delete-product-btn" type="submit" name="massDeleteSubmit">
+                MASS DELETE
+            </button>
         </div>
-    </nav>
+    </div>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="product-list">
         <?php
         $products = $productController->getProducts();
 
         if (count($productsFromDb) !== 0) {
             foreach ($productsFromDb as $p) {
-                echo '<div class="col">';
-                echo '<div class="card h-100">';
-                echo '<div class="form-check">';
+                echo '<div class="product-info">';
                 echo '<input class="delete-checkbox" type="checkbox" name="productIds[]" value="' . $p->product_id . '">';
-                echo '</div>';
-                echo '<p class="card-text">' . $p->Sku . '</p>';
-                echo '<p class="card-text">' . $p->name . '</p>';
-                echo '<p class="card-text">' . $p->price . ' $</p>';
+                echo '<p class="attribute">' . $p->Sku . '</p>';
+                echo '<p class="attribute">' . $p->name . '</p>';
+                echo '<p class="attribute">' . $p->price . ' $</p>';
                 $products[$p->type_id]->displayProductAttributes($p);
                 echo '</div>';
-                echo '</div>';
             }
+        } else {
+            echo '<p>Product list is empty! Add some products</p>';
         }
         ?>
     </div>
 </form>
 
-<script src="/product-web-app/src/resources/static/js/bootstrap.min.js"></script>
-</body>
-</html>
+<?php
+require_once(__DIR__ . '/parts/footer.php'); ?>

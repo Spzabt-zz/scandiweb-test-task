@@ -31,20 +31,25 @@ class DvdDisc extends Product
 
     public function displayProductAttributeInputFields()
     {
-        echo '<div class="mb-3 form-check">
-                <label class="form-check-label" for="size">size</label>
-                <input type="number" step="any" class="form-label"
-                    id="size" name="size" placeholder="Enter DVD size">
-                <div class="invalid-feedback" id="sizeErr"></div>
+        echo '<div class="mb-3">
+                <div class="label-col">
+                    <label class="form-check-label" for="size">Size (MB)</label>
+                </div>
+                <div class="input-col">
+                    <input type="number" step="any" class="form-control"
+                        id="size" name="size" placeholder="Enter DVD size">
+                    <div class="invalid-feedback" id="sizeErr"></div>
+                    <br>
+                    <div>Please, provide size</div>
+                </div>
               </div>';
-        echo '<div>Please, provide size</div>';
     }
 
     public function validateProductAttributes()
     {
         if (empty($_POST['size'])) {
             $this->sizeErr = 'Please, provide size data';
-        } else if (ProductUtil::countOfDigits($_POST['size']) > self::MAX_SIZE_LENGTH) {
+        } elseif (ProductUtil::countOfDigits($_POST['size']) > self::MAX_SIZE_LENGTH) {
             $this->sizeErr = 'DVD size must be up to ' . self::MAX_SIZE_LENGTH . ' digits!';
         } else {
             $this->size = filter_input(INPUT_POST, 'size', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -74,7 +79,8 @@ class DvdDisc extends Product
 
     public function displayProductAttributes($product)
     {
-        echo '<p class="card-text">Size: ' . $product->size . ' MB</p>';
+        $product->size = str_replace('.00', '', $product->size);
+        echo '<p class="attribute">Size: ' . $product->size . ' MB</p>';
     }
 
     public function deleteProduct($productId)

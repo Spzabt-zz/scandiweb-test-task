@@ -41,42 +41,55 @@ class Furniture extends Product
 
     public function displayProductAttributeInputFields()
     {
-        echo "<div class='mb-3 form-check'>
-                <label class='form-check-label' for='height'>height</label>
-                <input type='number' class='form-label'
-                 id='height' name='height' placeholder='Enter furniture height'>
-                <div class='invalid-feedback' id='heightErr'></div>
+        echo "<div class='mb-3'>
+                <div class='label-col'>
+                    <label class='form-check-label' for='height'>Height (CM)</label>
+                </div>
+                <div class='input-col'>
+                    <input type='number' class='form-control'
+                     id='height' name='height' placeholder='Enter furniture height'>
+                    <div class='invalid-feedback' id='heightErr'></div>
+                </div>
               </div>";
-        echo "<div class='mb-3 form-check'>
-                <label class='form-check-label' for='width'>width</label>
-                <input type='number' class='form-label'
-                 id='width' name='width' placeholder='Enter furniture width'>
-                <div class='invalid-feedback' id='widthErr'></div> 
+        echo "<div class='mb-3'>
+                <div class='label-col'>
+                    <label class='form-check-label' for='width'>Width (CM)</label>
+                </div>
+                <div class='input-col'>
+                    <input type='number' class='form-control'
+                     id='width' name='width' placeholder='Enter furniture width'>
+                    <div class='invalid-feedback' id='widthErr'></div> 
+                </div>
               </div>";
-        echo "<div class='mb-3 form-check'>
-                <label class='form-check-label' for='length'>length</label>
-                <input type='number' class='form-label'
-                 id='length' name='length' placeholder='Enter furniture length'>
-                <div class='invalid-feedback' id='lengthErr'></div>
+        echo "<div class='mb-3'>
+                <div class='label-col'>
+                    <label class='form-check-label' for='length'>Length (CM)</label>
+                </div>
+                <div class='input-col'>
+                    <input type='number' class='form-control'
+                     id='length' name='length' placeholder='Enter furniture length'>
+                    <div class='invalid-feedback' id='lengthErr'></div>
+                    <br>
+                    <div>Please, provide dimensions</div>
+                </div>
               </div>";
-        echo '<div>Please, provide dimensions</div>';
     }
 
     public function validateProductAttributes()
     {
         if (empty($_POST['height'])) {
             $this->heightErr = 'Please, provide height data';
-        } else if (ProductUtil::countOfDigits($_POST['height']) > self::MAX_HEIGHT_SIZE) {
+        } elseif (ProductUtil::countOfDigits($_POST['height']) > self::MAX_HEIGHT_SIZE) {
             $this->heightErr = 'Furniture height must be up to ' . self::MAX_HEIGHT_SIZE . ' digits!';
         }
         if (empty($_POST['width'])) {
             $this->widthErr = 'Please, provide width data';
-        } else if (ProductUtil::countOfDigits($_POST['width']) > self::MAX_WIDTH_SIZE) {
+        } elseif (ProductUtil::countOfDigits($_POST['width']) > self::MAX_WIDTH_SIZE) {
             $this->widthErr = 'Furniture width must be up to ' . self::MAX_WIDTH_SIZE . ' digits!';
         }
         if (empty($_POST['length'])) {
             $this->lengthErr = 'Please, provide length data';
-        } else if (ProductUtil::countOfDigits($_POST['length']) > self::MAX_LENGTH_SIZE) {
+        } elseif (ProductUtil::countOfDigits($_POST['length']) > self::MAX_LENGTH_SIZE) {
             $this->lengthErr = 'Furniture length must be up to ' . self::MAX_LENGTH_SIZE . ' digits!';
         }
         if (empty($this->heightErr) && empty($this->widthErr) && empty($this->lengthErr)) {
@@ -109,7 +122,10 @@ class Furniture extends Product
 
     public function displayProductAttributes($product)
     {
-        echo '<p class="card-text">Dimension: ' . $product->height . 'x' . $product->width . 'x' . $product->length . '</p>';
+        $product->height = str_replace('.00', '', $product->height);
+        $product->width = str_replace('.00', '', $product->width);
+        $product->length = str_replace('.00', '', $product->length);
+        echo '<p class="attribute">Dimension: ' . $product->height . 'x' . $product->width . 'x' . $product->length . '</p>';
     }
 
     public function deleteProduct($productId)

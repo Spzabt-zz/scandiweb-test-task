@@ -28,22 +28,28 @@ class Book extends Product
         $stmt = $this->conn->prepare("INSERT INTO book (product_id, weight) VALUES (?, ?)");
         $stmt->execute([$productId, $this->weight]);
     }
+
     public function displayProductAttributeInputFields()
     {
-        echo "<div class='mb-3 form-check'>
-                <label class='form-check-label' for='weight'>weight</label>
-                <input type='number' class='form-label'
-                 id='weight' name='weight' placeholder='Enter book weight'>
-                <div class='invalid-feedback' id='weightErr'></div>
+        echo "<div class='mb-3'>
+                <div class='label-col'>
+                    <label class='form-check-label' for='weight'>Weight (KG)</label>
+                </div>
+                <div class='input-col'>
+                    <input type='number' class='form-control'
+                     id='weight' name='weight' placeholder='Enter book weight'>
+                    <div class='invalid-feedback' id='weightErr'></div>
+                    <br>
+                    <div>Please, provide weight</div>
+                </div>
               </div>";
-        echo '<div>Please, provide weight</div>';
     }
 
     public function validateProductAttributes()
     {
         if (empty($_POST['weight'])) {
             $this->weightErr = 'Please, provide weight data';
-        } else if (ProductUtil::countOfDigits($_POST['weight']) > self::MAX_WEIGHT_LENGTH) {
+        } elseif (ProductUtil::countOfDigits($_POST['weight']) > self::MAX_WEIGHT_LENGTH) {
             $this->weightErr = 'Book weight must be up to ' . self::MAX_WEIGHT_LENGTH . ' digits!';
         } else {
             $this->weight = filter_input(INPUT_POST, 'weight', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -73,7 +79,8 @@ class Book extends Product
 
     public function displayProductAttributes($product)
     {
-        echo '<p class="card-text">Weight: ' . $product->weight . 'KG</p>';
+        $product->weight = str_replace('.00', '', $product->weight);
+        echo '<p class="attribute">Weight: ' . $product->weight . 'KG</p>';
     }
 
     public function deleteProduct($productId)

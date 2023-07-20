@@ -35,7 +35,7 @@ class ProductController
             if (isset($_POST['sku'])) {
                 if (empty($_POST['sku'])) {
                     $skuErr = 'Please, provide SKU';
-                } else if (strlen($_POST['sku']) > self::MAX_SKU_LENGTH) {
+                } elseif (strlen($_POST['sku']) > self::MAX_SKU_LENGTH) {
                     $skuErr = 'SKU length must be less or equals ' . self::MAX_SKU_LENGTH . ' symbols!';
                 } else {
                     $sku = filter_input(INPUT_POST, 'sku', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -43,7 +43,7 @@ class ProductController
 
                 if (empty($_POST['name'])) {
                     $nameErr = 'Please, provide product name';
-                } else if (strlen($_POST['name']) > self::MAX_NAME_LENGTH) {
+                } elseif (strlen($_POST['name']) > self::MAX_NAME_LENGTH) {
                     $nameErr = 'Product name length must be less or equals ' . self::MAX_NAME_LENGTH . ' symbols!';
                 } else {
                     $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -51,7 +51,7 @@ class ProductController
 
                 if (empty($_POST['price'])) {
                     $priceErr = 'Please, provide product price';
-                } else if (ProductUtil::countOfDigits($_POST['price']) > self::MAX_PRICE_LENGTH) {
+                } elseif (ProductUtil::countOfDigits($_POST['price']) > self::MAX_PRICE_LENGTH) {
                     $priceErr = 'Product price must be up to ' . self::MAX_PRICE_LENGTH . ' digits!';
                 } else {
                     $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -78,9 +78,8 @@ class ProductController
 
                 $this->products[$productTypeId]->validateProductAttributes();
 
-                if (empty($skuErr) && empty($nameErr) && empty($priceErr) && empty(
-                    $this->products[$productTypeId]->getProductAttributeFieldsErrors()
-                    )) {
+                if (empty($skuErr) && empty($nameErr) && empty($priceErr)
+                    && empty($this->products[$productTypeId]->getProductAttributeFieldsErrors())) {
                     if (isset($this->products[$productTypeId])) {
                         $product = $this->products[$productTypeId];
                         $product->setSku($sku);
@@ -132,7 +131,8 @@ class ProductController
         echo json_encode($this->response);
     }
 
-    public function removeProduct() {
+    public function removeProduct()
+    {
         if (isset($_POST['massDeleteSubmit']) && isset($_POST['productIds'])) {
             $productIds = $_POST['productIds'];
 
@@ -154,7 +154,8 @@ class ProductController
         }
     }
 
-    public function sortProducts(): array {
+    public function sortProducts(): array
+    {
         $productsFromDb = [];
         foreach ($this->products as $product => $productValue) {
             $productsFromDb = array_merge($productsFromDb, $productValue->getProductList());
