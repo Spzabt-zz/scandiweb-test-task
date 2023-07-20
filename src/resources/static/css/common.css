@@ -1,0 +1,45 @@
+* {
+    font-family: "Lucida Handwriting", "Brush Script MT", cursive;
+    margin: 0 10px 0 10px;
+}
+
+.test-task-footer {
+    border-top: 3px solid #000000;
+    border-radius: 3px;
+
+    padding-top: 30px;
+    text-align: center;
+
+    position: relative;
+    bottom: 0;
+
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.test-task-header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 30px;
+
+    border-bottom: 3px solid #000000;
+    border-radius: 3px;
+
+    padding-bottom: 10px;
+}
+
+.test-task-header .page-logo {
+    font-weight: lighter;
+    font-size: 2.2em;
+}
+
+.test-task-header .header-controls {
+    display: flex;
+    flex-direction: inherit;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}

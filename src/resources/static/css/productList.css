@@ -1,0 +1,161 @@
+.test-task-header .header-controls .add-product-btn {
+    height: 35px;
+
+    margin-right: 20px;
+
+    border-style: solid;
+    border-width: 3px 3px 3px 3px;
+    border-radius: 2px;
+    border-color: #000000;
+
+    box-shadow: 4px 4px #000000;
+    transition: box-shadow 0.5s;
+
+    font-size: large;
+}
+
+.test-task-header .header-controls .add-product-btn:hover {
+    box-shadow: 0 0;
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.test-task-header .header-controls .mass-delete-product-btn {
+    height: 35px;
+
+    border-style: solid;
+    border-width: 3px 3px 3px 3px;
+    border-radius: 2px;
+    border-color: #000000;
+
+    box-shadow: 4px 4px #000000;
+    transition: box-shadow 0.5s;
+
+    font-size: large;
+}
+
+.test-task-header .header-controls .mass-delete-product-btn:hover {
+    box-shadow: 0 0;
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 10px;
+    align-content: start;
+
+    max-height: 73vh;
+    overflow-y: auto;
+}
+
+.product-list > .product-info {
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 3px;
+
+    padding: 20px 0 40px 0;
+    margin: 20px 20px 20px 20px;
+
+    text-align: center;
+    line-height: 1.1;
+    word-wrap: break-word;
+}
+
+.product-list .product-info .attribute {
+    margin-bottom: 4px;
+}
+
+.product-list .product-info input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+
+    margin-left: 20px;
+    height: 20px;
+    width: 20px;
+
+    border: 2px solid #000000;
+    border-radius: 3px;
+    background-color: #ffffff;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform 1s;
+}
+
+.product-list .product-info input[type="checkbox"]::after {
+    font-family: "Font Awesome 6 free";
+    font-weight: 900;
+    content: "\f00c";
+    font-size: 17px;
+    color: #000000;
+    display: none;
+}
+
+.product-list .product-info input[type="checkbox"]:hover {
+    transform: rotate(360deg);
+}
+
+.product-list .product-info input[type="checkbox"]:checked {
+    background-color: #000000;
+}
+
+.product-list .product-info input[type="checkbox"]:checked::after {
+    display: block;
+    color: #ffffff;
+}
+
+@media only screen and (max-width: 600px) {
+    .test-task-header .header-controls .mass-delete-product-btn {
+        height: 60px;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .product-list {
+        height: 63vh;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .product-list {
+        height: 73vh;
+    }
+    .test-task-footer {
+        padding-top: 10px;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .product-list {
+        height: 73vh;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .product-list {
+        height: 73vh;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .product-list {
+        height: 73vh;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .product-list {
+        height: 73vh;
+    }
+
+    .product-list .product-info {
+        line-height: 1.5;
+    }
+}
